@@ -540,9 +540,9 @@ with_trxn(Db, F) ->
                 ok = exec(Db, "COMMIT"),
                 Rv
             catch
-                _:Reason:Stacktrace ->
+                _:Reason ->
                     ok = exec(Db, "ROLLBACK"),
-                    {error, #{reason => Reason, stacktrace => Stacktrace}}
+                    {error, #{reason => Reason, stacktrace => erlang:get_stacktrace()}}
             end;
         {error, _} = Err -> Err
     end.
